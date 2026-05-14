@@ -7,22 +7,47 @@ REPORT_FILE = Path("reports/report.json")
 
 
 def analyze_log(log_lines):
+
     severity = "LOW"
     subsystem = "UNKNOWN"
 
+    error_count = 0
+    warning_count = 0
+
+    detected_issues = []
+
     for line in log_lines:
+
         if "DDR" in line:
             subsystem = "DDR"
 
+        elif "UART" in line:
+            subsystem = "UART"
+
+        elif "MACsec" in line or "MKA" in line:
+            subsystem = "MACsec"
+
         if "ERROR" in line:
             severity = "HIGH"
-        elif "WARNING" in line and severity != "HIGH":
-            severity = "MEDIUM"
+            error_count += 1
+            detected_issues.append(line.strip())
+
+        elif "WARNING" in line:
+            if severity != "HIGH":
+                severity = "MEDIUM"
+
+            warning_count += 1
+            detected_issues.append(line.strip())
 
     return {
+        "analysis_status": "COMPLETED",
         "subsystem": subsystem,
-        "severity": severity
-    }
+        "severity": severity,
+        "error_count": error_count,
+        "warning_count": warning_count,
+        "detected_issues": detected_issues,
+        "summary": f"{subsystem} subsystem reported {error_count} error(s) and {warning_count} warning(s)."
+}
 
 
 def main():

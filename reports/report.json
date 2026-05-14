@@ -1,4 +1,12 @@
 {
-    "subsystem": "UNKNOWN",
-    "severity": "HIGH"
+    "analysis_status": "COMPLETED",
+    "subsystem": "DDR",
+    "severity": "HIGH",
+    "error_count": 1,
+    "warning_count": 1,
+    "detected_issues": [
+        "[ERROR] DDR INIT FAILED",
+        "[WARNING] Retry attempt failed"
+    ],
+    "summary": "DDR subsystem reported 1 error(s) and 1 warning(s)."
 }
