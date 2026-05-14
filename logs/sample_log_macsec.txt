@@ -1,0 +1,3 @@
+[INFO] MACsec authentication started
+[ERROR] MKA authentication failed
+[WARNING] Secure channel not established

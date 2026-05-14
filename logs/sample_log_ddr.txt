@@ -1,0 +1,5 @@
+[INFO] Boot sequence started
+[INFO] DDR initialization started
+[ERROR] DDR INIT FAILED
+[WARNING] Retry attempt failed
+[INFO] System halted

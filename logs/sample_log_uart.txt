@@ -1,0 +1,3 @@
+[INFO] Boot sequence started
+[ERROR] UART timeout detected
+[INFO] System halted
