@@ -13,23 +13,31 @@ client = OpenAI(
 
 
 def read_log(log_file_path):
-
     with open(log_file_path, "r") as file:
         return file.read()
 
 
 def analyze_log_with_ai(log_text):
-
     prompt = f"""
 You are a firmware debugging assistant.
 
 Analyze this firmware log.
 
-Provide:
-1. Summary
-2. Severity
-3. Probable root cause
-4. Suggested debugging steps
+Severity must be one of: HIGH, MEDIUM, LOW.
+
+Return the response ONLY in valid JSON format.
+
+Use this structure:
+
+{{
+  "summary": "...",
+  "severity": "...",
+  "root_cause": "...",
+  "debug_steps": [
+      "...",
+      "..."
+  ]
+}}
 
 Firmware Log:
 {log_text}
@@ -40,13 +48,10 @@ Firmware Log:
         input=prompt
     )
 
-    return {
-        "ai_analysis": response.output_text
-    }
+    return json.loads(response.output_text)
 
 
 def main():
-
     log_file = Path("logs/sample_log_macsec.txt")
 
     log_text = read_log(log_file)
