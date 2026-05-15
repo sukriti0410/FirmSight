@@ -1,4 +1,5 @@
 import os
+import json
 from pathlib import Path
 from dotenv import load_dotenv
 from openai import OpenAI
@@ -39,7 +40,9 @@ Firmware Log:
         input=prompt
     )
 
-    return response.output_text
+    return {
+        "ai_analysis": response.output_text
+    }
 
 
 def main():
@@ -50,8 +53,12 @@ def main():
 
     ai_report = analyze_log_with_ai(log_text)
 
-    print("FirmSight V2 AI Analysis:")
-    print(ai_report)
+    report_file = Path("reports/ai_report.json")
+
+    with open(report_file, "w") as file:
+        json.dump(ai_report, file, indent=4)
+
+    print("FirmSight V2 AI Report Generated")
 
 
 if __name__ == "__main__":
