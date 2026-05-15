@@ -1,0 +1,58 @@
+import os
+from pathlib import Path
+from dotenv import load_dotenv
+from openai import OpenAI
+
+
+load_dotenv()
+
+client = OpenAI(
+    api_key=os.getenv("OPENAI_API_KEY")
+)
+
+
+def read_log(log_file_path):
+
+    with open(log_file_path, "r") as file:
+        return file.read()
+
+
+def analyze_log_with_ai(log_text):
+
+    prompt = f"""
+You are a firmware debugging assistant.
+
+Analyze this firmware log.
+
+Provide:
+1. Summary
+2. Severity
+3. Probable root cause
+4. Suggested debugging steps
+
+Firmware Log:
+{log_text}
+"""
+
+    response = client.responses.create(
+        model="gpt-5.5",
+        input=prompt
+    )
+
+    return response.output_text
+
+
+def main():
+
+    log_file = Path("logs/sample_log_macsec.txt")
+
+    log_text = read_log(log_file)
+
+    ai_report = analyze_log_with_ai(log_text)
+
+    print("FirmSight V2 AI Analysis:")
+    print(ai_report)
+
+
+if __name__ == "__main__":
+    main()
